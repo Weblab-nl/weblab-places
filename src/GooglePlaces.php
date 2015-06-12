@@ -24,9 +24,9 @@ class GooglePlaces {
     protected $key;
 
     /**
-     * The constructor made private
+     * The constructor
      */
-    private function __construct($key) {
+    public function __construct($key) {
         $this->key = $key;
     }
     
@@ -36,7 +36,7 @@ class GooglePlaces {
      * @param   string                                          The search string to find a place by
      * @return  \Weblab\GooglePlaces                            The google places api result object
      */
-    public static function search($searchString) {
+    public function search($searchString) {
         // the parameters needed to get the google places information
         $parameters = array(
             'query'     => $searchString,
@@ -44,7 +44,7 @@ class GooglePlaces {
         );
  
         // get the values from the places api
-        $result = self::fetchResult($parameters);
+        $result = $this->fetchResult($parameters);
 
         // if there is no valid result, return null
         if (is_null($result)) {
@@ -61,7 +61,7 @@ class GooglePlaces {
      * @param   string                                          The search string to find a place by
      * @return  \Weblab\GooglePlacesDetails                     The google places api result object
      */
-    public static function details($placeId) {
+    public function details($placeId) {
         // the parameters needed to get the google places information
         $parameters = array(
             'placeid'     => $placeId,
@@ -69,7 +69,7 @@ class GooglePlaces {
         );
         
         // get the values from the places api
-        $result = self::fetchResult($parameters, 'details');
+        $result = $this->fetchResult($parameters, 'details');
         
         // if there is no valid result, return null
         if (is_null($result)) {
@@ -118,12 +118,9 @@ class GooglePlaces {
      * @param   array               The parameters to add to the url
      * @return  string|null         The result of fetching the places information
      */
-    protected static function fetchResult($parameters, $type = 'textsearch') {
-        // create a google places object to get access to the google places api
-        $googlePlaces = self::instance();
-        
+    protected function fetchResult($parameters, $type = 'textsearch') {
         // get the values from the places api
-        $result = $googlePlaces->curl($parameters, $type);
+        $result = $this->curl($parameters, $type);
 
         // if there is no valid result, return null
         if ($result === false) {
