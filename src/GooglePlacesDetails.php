@@ -69,8 +69,11 @@ class GooglePlacesDetails {
         if (isset($result->website)) {
             $resultObject->website = $result->website;
         }
-        
-        $resultObject->telephone = str_replace(' ', '', $result->formatted_phone_number);
+
+        // set the phone number if available
+        if (isset($result->telephone)) {
+            $resultObject->telephone = str_replace(' ', '', $result->formatted_phone_number);
+        }
 
         // get the address information
         foreach ($result->address_components as $component) {
